@@ -91,7 +91,9 @@ Fully extensible with simple Python files
 
 ## 🖥️ Demo
 
-![screenshot](assets/demo_screenshot.png)  
+![screenshot](assets/demo_screenshot.png)
+![image](https://github.com/user-attachments/assets/399ac1b0-5dc5-4549-9188-8ce281ff6f44)
+
 > Shows assistant in action responding to voice & battery alerts!
 
 ---
