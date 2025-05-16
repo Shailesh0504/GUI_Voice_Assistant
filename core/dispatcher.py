@@ -1,3 +1,5 @@
+# core/dispatcher.py
+
 import importlib
 import pkgutil
 import os
