@@ -8,10 +8,6 @@ from gui.message_router import show_in_chat
 
 @register_command("check battery")
 def check_battery(params=None):
-    """
-    Checks and announces the current battery status of the device.
-    Also starts a background thread to monitor battery levels.
-    """
     confirm = pyautogui.confirm(
         title="Battery Status",
         text="Would you like me to tell you the current battery level?",
@@ -28,11 +24,10 @@ def check_battery(params=None):
 
         percent = battery.percent
         plugged = battery.power_plugged
-
         status = f"{percent}% {'(charging)' if plugged else '(not charging)'}"
-        speak(f"Your battery is at {percent} percent. {'It is charging.' if plugged else 'It is not charging.'}")
 
-        # Friendly proactive tips
+        speak(f"Your battery is at {percent} percent. {'It is currently charging.' if plugged else 'It is not charging.'}")
+
         if plugged and percent == 100:
             speak("Battery fully charged. You may unplug the charger to preserve battery health.")
         elif not plugged and percent <= 20:
@@ -50,6 +45,7 @@ def check_battery(params=None):
 def monitor_battery_status():
     notified_full = False
     notified_low = False
+    last_plugged_state = None  # to track plug/unplug events
 
     while True:
         try:
@@ -58,21 +54,35 @@ def monitor_battery_status():
                 percent = battery.percent
                 plugged = battery.power_plugged
 
+                # Detect plug/unplug events
+                if last_plugged_state is not None and plugged != last_plugged_state:
+                    if plugged:
+                        msg = "🔌 Charger connected. Device is now charging."
+                        speak("Charger connected. Charging has started.")
+                        show_in_chat(msg)
+                    else:
+                        msg = "🔌 Charger disconnected. Device is now running on battery."
+                        speak("Charger disconnected. Running on battery.")
+                        show_in_chat(msg)
+                last_plugged_state = plugged
+
+                # Full battery notification
                 if plugged and percent >= 100 and not notified_full:
-                    message = "Heads up! Battery is now full. Please unplug the charger."
-                    speak("Heads up! Battery is now full. Please unplug the charger.")
-                    show_in_chat("🔋 " + message)  # ✅ show in chat
+                    msg = "🔋 Battery is now fully charged. You can unplug the charger."
+                    speak("Battery is now fully charged. You can unplug the charger.")
+                    show_in_chat(msg)
                     notified_full = True
                     notified_low = False
 
+                # Low battery notification
                 elif not plugged and percent <= 20 and not notified_low:
-                    message = "Warning: Battery is below 20 percent. Please plug in the charger."
-                    speak("Warning: Battery is below 20 percent. Please plug in the charger.")
-                    show_in_chat("🔋 " + message)  # ✅ show in chat
+                    msg = "🔋 Warning: Battery is below 20 percent. Please connect the charger."
+                    speak("Battery is below 20 percent. Please connect the charger.")
+                    show_in_chat(msg)
                     notified_low = True
                     notified_full = False
 
-                # Reset notification flags if battery moves out of critical state
+                # Reset flags
                 if percent < 100 and plugged:
                     notified_full = False
                 if percent > 20 and not plugged:
@@ -81,5 +91,4 @@ def monitor_battery_status():
         except Exception:
             pass
 
-        time.sleep(60)
-
+        time.sleep(60)  # Check every 1 minute

@@ -28,7 +28,7 @@ APPLICATIONS = {
     "discord": "C:\\Users\\%USERNAME%\\AppData\\Local\\Discord\\app-1.11.1\\Discord.exe",
     "teams": "C:\\Users\\%USERNAME%\\AppData\\Local\\Microsoft\\Teams\\Update.exe --processStart \"Teams.exe\"",
     "cisco vpn": "C:\\Program Files (x86)\\Cisco\\Cisco AnyConnect Secure Mobility Client\\vpnui.exe",
-    "brave": "C:\\Users\\%USERNAME%\\AppData\\Local\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+    "brave": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
     "obs studio": "C:\\Program Files\\obs-studio\\bin\\64bit\\obs64.exe"
 }
 

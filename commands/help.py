@@ -5,80 +5,106 @@ from core.voice_output import speak
 import threading
 import tkinter as tk
 from tkinter import scrolledtext
+import tkinter as tk
+from tkinter import scrolledtext
 
 # Replace this with an import if COMMAND_MAP is stored elsewhere
 COMMAND_MAP = {
-    "greet": ["hello", "hi", "hey", "good morning", "hey assistant"],
-    "mood_check": ["how are you", "how's it going", "how do you feel"],
-    "introduce": ["what is your name", "what's your name", "who are you", "introduce yourself"],
-    "creator_info": ["who created you", "who made you", "where are you from"],
-    "capabilities": ["what can you do", "what do you do", "how do you work", "how do you function"],
-    "reality_check": ["are you real", "are you human", "do you remember me", "do you know me", "do you understand me"],
-    "gratitude": ["thank you", "thanks", "thanks a lot"],
-    "farewell": ["bye", "goodbye", "see you later", "talk to you later", "farewell"],
-    "small_talk": ["nice to meet you", "pleasure meeting you", "let's chat", "let's talk"],
-    "status_check": [ "what is happening", "what are you working on", "kya ho raha hai", "how's it going" ],
-    "motivation": ["motivate me","i need motivation","give me a boost","say something inspiring","encourage me"],
-    "fun_fact": [ "tell me a fact", "give me a fun fact", "say something interesting", "random fact please", "what’s a cool fact" ],
-    "coffee_time": ["coffee time","i need coffee","let's take a break","time for coffee","coffee suggestion"],
-    "tech_tip": [ "tech tip please", "give me a tech tip", "how to be better with tech", "helpful tech advice", "computer tip" ],
-    "compliment": [ "give me a compliment", "say something nice", "compliment me", "cheer me up", "make me smile" ],
-    "set alarm": ["set alarm", "wake me up at", "alarm for"],
-    "set timer": ["set timer", "start timer", "start my workout"],
-    "stop alarm": ["stop alarm", "cancel alarm"],
-    "set reminder": ["remind me to", "set reminder", "remind"],
-    "play youtube": ["play on youtube", "play song", "गाना बजाओ"],
-    "open app": ["open", "launch", "start"],
-    "close app": ["close", "exit"],
-    "tell joke": ["tell me a joke", "joke sunao"],
-    "search google": ["search", "google", "look up"],
-    "search wikipedia": ["search wikipedia", "on wikipedia", "wikipedia"],
-    "shutdown": ["shutdown", "power off"],
-    "restart": ["restart", "reboot"],
-    "logout": ["logout", "sign out"],
-    "lock": ["lock my system", "lock screen"],
-    "add todo": ["add task", "write in my to-do", "add to list"],
-    "read todo": ["read my tasks", "show to-do"],
-    "edit todo": ["edit to-do", "update task"],
-    "delete todo": ["delete task", "remove"],
-    "tell time": ["what time is it", "current time", "टाइम बताओ"],
-    "tell date": ["what's the date", "आज कौन सा दिन है"],
-    "check weather": ["will it rain", "weather forecast", "मौसम कैसा है"],
-    "read news": ["read news", "top news", "headlines"],
-    "translate text": ["translate this", "say in", "translate"],
-    "take screenshot": ["screenshot", "capture screen"],
-    "check battery": ["battery level", "check battery"],
-    "convert units": ["convert units", "how many liters", "unit conversion"],
-    "perform calculation": ["calculate", "15% of", "solve"],
-    "convert currency": ["convert currency", "usd to inr"],
-    "spell check": ["spell check", "how to spell"],
-    "backup folder": ["backup folder", "backup my data"],
-    "clean temp files": ["clean temp files", "clear temp"],
-    "create note": ["create a note", "note", "नोट बनाओ"],
-    "stock price": ["stock price", "check share price"],
-    "start screen recording": ["start screen recording", "record screen"],
-    "stop screen recording": ["stop screen recording"],
-    "youtube download": ["download youtube video", "download youtube audio", "download youtube playlist"],
-    "play favorite song": ["play favorite song", "play my favorite song", "play something I like", "play from favorite list", "play from my saved songs", "play a song from favorites", "play from favorite folder", "play local favorite song", "start my favorite track", "play a random favorite"],
-    "control youtube": [ "pause youtube", "play youtube video", "mute youtube", "unmute youtube", "fullscreen youtube", "exit fullscreen youtube", "turn on captions", "skip ad on youtube", "increase volume on youtube", "decrease volume on youtube", "forward youtube video", "rewind youtube video" ],
-    "help": ["help", "what can you do", "commands list"]
-    
+   "greet": ["hello", "hi", "hey", "good morning", "good afternoon", "good evening", "hey assistant"],
+  "mood_check": ["how are you", "how's it going", "how do you feel"],
+  "introduce": ["what is your name", "what's your name", "who are you", "introduce yourself"],
+  "creator_info": ["who created you", "who made you", "where are you from"],
+  "capabilities": ["what can you do", "what do you do", "how do you work", "how do you function"],
+  "reality_check": ["are you real", "are you human", "do you remember me", "do you know me", "do you understand me"],
+  "gratitude": ["thank you", "thanks", "thanks a lot"],
+  "farewell": ["bye", "goodbye", "see you later", "talk to you later", "farewell"],
+  "small_talk": ["nice to meet you", "pleasure meeting you", "let's chat", "let's talk"],
+  "status_check": ["what are you working on", "kya ho raha hai", "how's it going"],
+  "motivation": ["motivate me", "i need motivation", "give me a boost", "say something inspiring", "encourage me"],
+  "fun_fact": ["tell me a fact", "give me a fun fact", "say something interesting", "random fact please", "what’s a cool fact"],
+  "coffee_time": ["coffee time", "i need coffee", "let's take a break", "time for coffee", "coffee suggestion"],
+  "tech_tip": ["tech tip please", "give me a tech tip", "how to be better with tech", "helpful tech advice", "computer tip"],
+  "compliment": ["give me a compliment", "say something nice", "compliment me", "cheer me up", "make me smile"],
+  "spiritual": [ "spiritual", "spiritual advice", "spiritual guidance", "spiritual help", "spiritual support", "आध्यात्मिक सलाह", "आध्यात्मिक मार्गदर्शन", "आध्यात्मिक सहायता", "आध्यात्मिक समर्थन", "शांतिपूर्ण विचार" ],
+  "set timer": ["set timer", "start timer", "start my workout", "begin cooking", "start countdown", "timer शुरू करो", "टाइमर चालू करो", "workout शुरू करो"],
+  "set alarm": ["set alarm", "wake me up at", "alarm for", "alarm at", "create alarm", "add alarm", "wake me at", "wake me up", "मुझे जगाना", "मुझे उठाना", "5 बजे अलार्म लगाओ", "अलार्म सेट करो"],
+  "stop alarm": ["stop alarm", "cancel alarm", "disable alarm", "remove alarm", "delete alarm", "अलार्म बंद करो", "अलार्म हटाओ", "अलार्म कैंसल करो"],
+  "stop all alarms": ["stop all alarms", "disable all alarms", "cancel all alarms", "clear all alarms", "remove all alarms", "सभी अलार्म बंद करो", "सभी अलार्म हटाओ", "सभी अलार्म कैंसल करो"],
+  "set reminder": [ "remind me to", "set reminder", "remind me", "remind", "remind me at", "mujhe yaad dilana", "mujhe yaad dilao", "yaad dilao", "reminder set karo", "reminder lagao", "remind me for", "reminder at", "remind me in", "मुझे याद दिलाओ", "याद दिलाओ", "रिमाइंडर लगाओ", "रिमाइंडर सेट करो", "मुझे रिमाइंड करो"], 
+  "list reminders": ["list reminders", "what reminders are set"],
+  "clear reminders": ["clear reminders", "delete all reminders"],
+  "play youtube": ["play on youtube", "play song","youtub","play youtube", "play video", "गाना बजाओ", "सॉन्ग चलाओ", "वीडियो बजाओ", "बजाओ", "सुनावो"],
+  "open app": ["open application", "open the app", "start notepad", "launch calculator", "open outlook", "start word", "launch excel"],
+  "close app": ["close", "exit", "terminate", "kill", "close outlook", "close word", "close excel"],
+  "tell joke": ["tell me a joke", "joke sunao", "hindi joke", "koi mazedar baat batao", "joke batao", "funny joke", "joke", "चुटकुला सुनाओ"],
+  "search google": ["search", "google", "look up", "गूगल पर सर्च करो", "google it", "google search", "गूगल"],
+  "search wikipedia": ["search wikipedia", "on wikipedia", "wiki search", "tell me about", "विकिपीडिया", "wikipedia पर जानकारी दो", "विकिपीडिया पर खोजें", "विकिपीडिया सर्च करो"],
+  "shutdown": ["shutdown", "shutdown the system", "power off", "computer बंद करो", "turn off"],
+  "restart": ["restart", "reboot", "restart the system", "system restart करो"],
+  "logout": ["logout", "sign out", "log me out", "user logout करो"],
+  "lock": ["lock my system", "lock my pc", "lock screen", "system को lock करो", "lock", "मैं अभी आया", "मैं थोड़ी देर में आ रहा हूँ", "i am just coming", "i will be back in a minute", "i am stepping away", "i come in a while"],
+  "add todo": ["add to my to-do list", "add this to my list", "add task", "write in my to-do", "add", "add to list", "to-do लिखो", "सूची में जोड़ो"],
+  "read todo": ["what's on my to-do list", "read my tasks", "show to-do", "to-do क्या है", "list my tasks", "read to-do","टू-डू लिस्ट दिखाओ"],
+  "edit todo": ["change task", "edit to-do", "update task", "edit","टू-डू अपडेट करो"],
+  "delete todo": ["remove from to-do", "delete task", "remove", "delete","टास्क हटाओ"],
+  "tell time": ["what time is it", "tell me the time", "current time", "अब कितना समय हुआ", "टाइम बताओ", "घड़ी में कितना बजा है", "time"],
+  "tell date": ["what's the date today", "tell me the date", "current date", "आज की तारीख", "आज कौन सा दिन है", "date"],
+  "check weather": ["will it rain today", "weather forecast", "is it going to rain", "what's the weather", "tell me the weather", "मौसम कैसा है", "आज बारिश होगी क्या", "बारिश होगी", "बारिश होगी क्या", "barish hogi", "barish hogi kya", "baarish", "rain today", "weather"],  
+  "read news": ["read news", "what's happening in the world", "top news", "headlines", "breaking news", "latest news", "खबरें पढ़ो", "आज की खबर", "समाचार", "news"],
+  "translate text": ["how do you say", "translate this", "translate to", "say in", "translate", "translate text", "इसका अनुवाद करो", "को हिंदी में अनुवाद करो", "को में कैसे बोलते हैं", "कैसे बोलते हैं", "मतलब क्या है", "हिंदी में क्या कहते हैं", "क्या बोलते हैं"],
+  "take screenshot": ["take a screenshot", "capture screen", "screenshot", "screen capture", "take snapshot", "capture my screen", "स्क्रीनशॉट लो", "स्क्रीन कैप्चर करो"],
+  "check battery": ["check battery", "battery level", "is my battery low", "battery status", "tell battery percentage", "my laptop's out of power", "how much battery is left", "बैटरी स्टेटस", "बैटरी कितनी है"],
+  "convert units": ["convert units", "how many liters", "how many kilometers", "2 gallons to liters", "convert 10 km to miles", "convert inches to cm", "गैलन को लीटर में बदलो", "unit conversion"],
+  "perform calculation": ["calculate", "perform calculation", "what is", "15% of", "find the value of", "solve", "multiply", "divide", "add", "subtract", "गणना करो", "percentage of"],
+  "convert currency": ["convert currency", "convert money", "convert euros to rupees", "convert 500 to rupees", "how much is 500 usd in inr", "change 100 usd to inr", "exchange dollars to rupees", "convert €500 to indian rupees", "currency exchange", "convert rupees to dollars", "how many rupees is 100 usd", "how much inr is 1 euro", "यूएसडी को रुपये में बदलो", "रुपये को डॉलर में बदलो"],
+  "spell check": ["check the spelling of", "spell", "spell check", "check spelling", "how to spell", "spelling of", "शब्द का सही स्पेलिंग बताओ"],
+  "backup folder": ["backup folder", "backup my folder", "backup my data", "backup my computer", "backup my laptop", "backup my files", "backup my documents", "backup my pc", "backup my system"],
+  "clean temp files": ["clean temp files", "clean temp", "free up disk space", "clear temp files", "clear temp", "delete temp files", "delete temp", "temp files", "temp", "डिस्क स्पेस खाली करो", "स्पेस फ्री करो", "टेम्प फाइल हटाओ", "कचरा हटाओ", "मेमोरी क्लीन करो", "टेम्प डिलीट करो", "फोल्डर साफ करो", "बैकअप के बाद सफाई", "जगह बनाओ"],
+  "clear recycle bin": ["clear recycle bin", "empty recycle bin", "delete recycle bin", "recycle bin", "फ़ोल्डर साफ करो", "बैकअप के बाद सफाई", "जगह बनाओ"],
+  "create note": ["create a note", "note", "नोट बनाओ", "नोट लिखो"],
+  "stock price": ["stock price", "share price", "market price", "share market", "current stock price", "latest stock price", "check share price", "मुझे स्टॉक प्राइस बताओ", "शेयर का भाव बताओ", "अभी का स्टॉक प्राइस क्या है", "स्टॉक मार्केट प्राइस क्या है", "शेयर मार्केट का भाव"],
+  "start screen recording": ["start screen recording", "record screen", "begin screen recording", "start recording my screen", "please record screen", "i need to record this meeting", "can you record the screen"],
+  "stop screen recording": ["stop screen recording", "end screen recording", "stop recording", "that's all i need", "you can stop now", "please stop the recording"],
+  "help": ["help", "what can you do", "what are your features", "show me help", "commands list", "how can you assist"],
+  "youtube download": ["download youtube video", "download youtube audio", "start youtube downloader", "i want to download a youtube video", "youtube mp3 download", "download from youtube"],
+  "play favorite song": ["play favorite song", "play my favorite song", "next song", "अगला song", "repeat song", "play a random favorite"],
+  "control youtube": [ "control youtube", "pause youtube", "pause the video", "play youtube", "play the video", "mute youtube", "unmute youtube", "fullscreen youtube", "full screen youtube", "enter fullscreen", "enter full screen", "exit fullscreen youtube", "exit full screen", "turn on captions", "turn on subtitles", "enable captions", "skip ad on youtube", "skip ad", "skip ads", "increase volume on youtube", "volume up", "raise volume", "decrease volume on youtube", "volume down", "lower volume", "forward youtube video", "rewind youtube video", "seek forward", "seek backward", "youtube next", "youtube previous" ],
+  "control chrome": [ "control chrome", "new tab in chrome", "open new tab", "chrome me new tab kholo", "क्रोम में नया टैब खोलो", "close chrome tab", "close tab", "close this tab", "close this screen", "close this then", "tab बंद करो", "क्रोम टैब बंद करो", "reopen closed tab", "reopen tab", "restore tab", "पिछला टैब फिर से खोलो", "open new window", "new chrome window", "नई विंडो खोलो", "क्रोम में नई विंडो खोलो", "new tab in chrome", "open new tab", "chrome me new tab kholo", "क्रोम में नया टैब खोलो", "close chrome tab","close tab","close this tab","close this screen","close this then","tab बंद करो","क्रोम टैब बंद करो", "reopen closed tab","reopen tab","restore tab","पिछला टैब फिर से खोलो", "open new window", "new chrome window", "नई विंडो खोलो","क्रोम में नई विंडो खोलो", "close chrome window","close window","क्रोम विंडो बंद करो","chrome window बंद करो", "switch to next tab","next tab","अगला टैब","next chrome tab","chrome में अगला टैब", "switch to previous tab","previous tab","पिछला टैब","chrome में पिछला टैब", "refresh chrome","refresh page","पेज रिफ्रेश करो","क्रोम पेज फिर से लोड करो", "open history in chrome","chrome history खोलो","इतिहास दिखाओ","क्रोम हिस्ट्री","open downloads in chrome","download दिखाओ","क्रोम डाउनलोड्स खोलो","incognito mode","open incognito","open incognito tab","incognito tab","गुप्त मोड","इनकॉग्निटो टैब खोलो", "गुप्त टैब", "clear chrome history", "delete history","क्रोम हिस्ट्री साफ करो","इतिहास मिटाओ", "chrome का इतिहास मिटाओ"],
+  "check system": ["check disk", "check memory", "check ram", "how much memory is left", "how much free space", "storage left", "free ram", "system usage", "system status", "performance status", "disk and memory usage", "ram status"],
+  "open website": ["open site", "open website", "go to website", "open my gmail", "launch facebook", "go to chatgpt", "browse linkedin", "visit site", "open instagram", "open glpi"],
+  "add website": [ "add", "add site", "save website", "insert website", "add website in category", "add site to", "वेबसाइट जोड़ो"],
+  "website list": [ "list websites","show all", "show websites","list sites", "show sites", "list category", "list tools", "list ai tools", "list dev websites", "list games", "list social", "list movie sites", "show all ai tools", "ai websites", "education sites", "movies list", "वेबसाइट दिखाओ", "साइट्स दिखाओ" ],
+  "navigate to": [ "navigate to","where is","कहाँ है","कहा है", "मुझे वहाँ ले चलो", "वहाँ कैसे जाऊं" ],
+  "check internet speed": ["check internet speed", "internet speed", "check my internet speed", "इंटरनेट की स्पीड बताओ", "मेरी इंटरनेट स्पीड क्या है", "इंटरनेट स्पीड टेस्ट करो", "नेट की स्पीड बताओ" ],
+  "show wifi password": [ "show wifi password", "saved wifi password", "wifi password", "retrieve wifi password", "wifi ka password", "wifi ka paasword", "wifi password dikhao", "वाइफाई पासवर्ड दिखाओ", "सेव किया हुआ वाईफाई पासवर्ड" ],
+  "ping": ["ping", "check ping", "ping to", "ping server", "server ping", "host ping", "ping karo", "पिंग करो" ],
+  "add habit": [ "add habit", "create habit","start tracking habit", "set new habit", "make a habit", "track habit" ],
+  "read habit": [ "list habits", "show habits", "read habit", "what are my habits", "view my habits" ],
+  "delete habit": [ "delete habit", "remove habit", "stop tracking habit", "discard habit" ],
+  "add expense": [ "add expense", "i spent", "log expense", "track expense", "record spending", "add spending", "expense of", "spending entry" ],
+  "read expenses": [ "read expenses", "show expenses", "list expenses", "what did i spend", "display expenses", "today's expenses" ],
+  "delete expense": ["delete expense","remove last expense","undo last spending", "cancel recent expense","delete spending entry"],
+  "summarize expenses": [ "summarize expenses", "expense summary", "total expenses", "how much did i spend", "summarize expenses for this week", "summarize expenses for this month", "spending this month", "spending this week" ],
+  "add memory": [ "remember that", "note that", "i want to remember", "store this info", "add to memory" ],
+  "read memory": [ "what did i tell you", "recall memory", "search memory", "what do you remember about", "do you remember", "read memory" ],
+  "delete memory": ["delete memory", "forget that", "forget my", "remove memory","delete my", "forget what I said", "erase memory", "remove what I told you"],
+  "list memories": [ "list memories", "show memory list", "show all memories", "display memories", "what have I stored", "show me what you remember" ],
+  "update memory": [ "update memory", "change memory", "edit memory", "modify memory", "update my", "change my" ]
+   
 }
 
 @register_command("help")
 def show_help(params=None):
-    threading.Thread(
-        target=speak,
-        args=("Here's the full command reference. I've highlighted your exact matches.",),
-        daemon=True
-    ).start()
-    threading.Thread(target=show_help_gui, daemon=True).start()
-    return "Help window opened."
+    speak("Here's the full command reference. I've highlighted your exact matches.")
+    try:
+        show_help_gui()
+        return "Help window opened."
+    except Exception as e:
+        return f"❌ Failed to open help window: {e}"
 
 
-def show_help_gui():
-    import tkinter as tk
-    from tkinter import scrolledtext
+
+def show_help_gui():   
 
     def populate(text_widget, query=""):
         text_widget.config(state='normal')

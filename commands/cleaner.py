@@ -1,12 +1,11 @@
-# commands/cleaner.py
-
 import os
 import shutil
 import threading
 import platform
+import pyautogui
 from core.registry import register_command
 from core.voice_output import speak
-import pyautogui
+from gui.message_router import show_in_chat
 
 def confirm_action(action_name):
     return pyautogui.confirm(
@@ -18,8 +17,8 @@ def confirm_action(action_name):
 @register_command("clean temp files")
 def clean_temp_files(params=None):
     """
-    Cleans system/user temporary files after user confirmation.
-    Runs in a separate thread to avoid blocking the main UI.
+    Cleans temporary system/user files after confirmation.
+    Runs in a background thread to avoid freezing the UI.
     """
 
     def cleanup():
@@ -36,40 +35,42 @@ def clean_temp_files(params=None):
             temp_dirs = ["/tmp"]
 
         cleaned_files = 0
-        failed = []
+        failed_items = []
 
         try:
             for temp_dir in temp_dirs:
                 if temp_dir and os.path.exists(temp_dir):
                     for root, dirs, files in os.walk(temp_dir):
                         for f in files:
-                            file_path = os.path.join(root, f)
                             try:
-                                os.remove(file_path)
+                                os.remove(os.path.join(root, f))
                                 cleaned_files += 1
                             except Exception:
-                                failed.append(file_path)
+                                failed_items.append(f)
 
                         for d in dirs:
-                            dir_path = os.path.join(root, d)
                             try:
-                                shutil.rmtree(dir_path, ignore_errors=True)
+                                shutil.rmtree(os.path.join(root, d), ignore_errors=True)
                             except Exception:
-                                failed.append(dir_path)
+                                failed_items.append(d)
 
-            speak(f"Cleanup completed. Removed {cleaned_files} files.")
-            return (f"Temporary files cleaned. {cleaned_files} files removed.")
+            message = f"🧹 Cleanup complete. Removed {cleaned_files} temporary files."
+            speak(f"Cleanup finished. I removed {cleaned_files} unnecessary files.")
+            show_in_chat(message)
+
         except Exception as e:
-            speak("Cleanup failed.")
-            print(f"Cleanup failed due to error: {e}")
+            speak("Sorry, something went wrong while cleaning.")
+            show_in_chat(f"❌ Cleanup failed due to: {e}")
 
-    # Confirm before starting cleanup
-    action_desc = "clear temporary files to free up space"
-    speak(f"Got it — shall I {action_desc}?")
+    # Voice introduction
+    speak("You asked me to clean up temporary files to free up space.")
+    action_desc = "clean temporary files"
+
     if not confirm_action(action_desc):
-        speak("Okay, cleanup cancelled.")
-        return "Cleanup cancelled."
+        speak("Understood. I won't delete anything.")
+        return "🛑 Cleanup cancelled by user."
 
-    # Start cleanup in a separate thread
+    # Start background cleanup
     threading.Thread(target=cleanup, daemon=True).start()
-    return "Starting cleanup in the background..."
+    speak("Cleaning started in the background. I'll let you know when it's done.")
+    return "🧹 Starting cleanup in the background..."

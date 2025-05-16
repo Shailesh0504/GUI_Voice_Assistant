@@ -191,3 +191,14 @@ def compliment(params=None):
         "You're basically the human equivalent of clean code."
     ]
     return random.choice(responses)
+
+@register_command("spiritual")
+def spiritual(params=None):
+    responses = [
+    "आप वहीं हैं जहाँ आपको होना चाहिए—प्रक्रिया पर विश्वास रखें।",
+    "शांति एक गहरी साँस से शुरू होती है। अभी एक लें।",
+    "आपके भीतर दिव्य प्रकाश है—दुनिया को इसे मंद मत करने दें।",
+    "सारा ब्रह्मांड आपके पक्ष में काम कर रहा है—खुले रहें।",
+    "शांत मन में ही उत्तर मिलते हैं—धैर्य रखें।"
+]
+    return random.choice(responses)

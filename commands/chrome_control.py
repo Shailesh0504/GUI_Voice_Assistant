@@ -5,25 +5,32 @@ import psutil
 import pygetwindow as gw
 from core.registry import register_command
 from utils.chrome_normalizer import normalize_chrome_command
+from rapidfuzz import process, fuzz
 
 @register_command("control chrome")
 def control_chrome_browser(params):
     """
-    Enhanced Chrome controller:
-    - Normalizes natural phrases using shared utility
-    - Checks if Chrome is running and focused
-    - Triggers key-based automation for browser control
+    Enhanced Chrome controller with fuzzy matching:
+    - Normalizes user input
+    - Uses rapidfuzz to handle natural phrasing
+    - Supports incognito, history, and browser key commands
     """
     if not params or not params.strip():
         return "Please specify what to do in Chrome — like 'new tab', 'incognito mode', or 'clear history'."
 
-    action = normalize_chrome_command(params)
+    raw_action = normalize_chrome_command(params)
 
     if not is_chrome_running():
-        return "❌ Chrome doesn't seem to be open. Please start Chrome and try again."
+        try:
+            subprocess.Popen(["chrome"])
+            time.sleep(3)  # Give Chrome time to launch
+        except Exception as e:
+            return f"Failed to launch Chrome.Error: {e}"
+        
+    
 
-    if not is_chrome_focused():
-        return "⚠️ Chrome is open, but not in focus.\n👉 Please bring the Chrome window to the front and try again."
+    if not focus_chrome_window():
+        return "⚠️ Couldn't focus Chrome window. Please ensure it's not minimized and try again."
 
     command_map = {
         "new tab": lambda: keyboard.press_and_release("ctrl+t"),
@@ -38,21 +45,26 @@ def control_chrome_browser(params):
         "open downloads": lambda: keyboard.press_and_release("ctrl+j"),
     }
 
-    if action in command_map:
-        try:
-            command_map[action]()
-            return f"✅ Chrome action performed: **{action.capitalize()}**"
-        except Exception as e:
-            return f"❌ Failed to perform Chrome action '{action}'.\nError: {e}"
+    # 🎯 Fuzzy match with rapidfuzz
+    best_match, score, _ = process.extractOne(
+        raw_action, list(command_map.keys()), scorer=fuzz.partial_ratio
+    )
 
-    elif action == "incognito":
+    if score >= 80:
+        try:
+            command_map[best_match]()
+            return f"✅ Chrome action performed: **{best_match.capitalize()}**"
+        except Exception as e:
+            return f"❌ Failed to perform Chrome action '{best_match}'.\nError: {e}"
+
+    elif "incognito" in raw_action:
         try:
             subprocess.Popen(["chrome", "--incognito"])
             return "🕵️ Incognito window launched in Chrome."
         except Exception as e:
             return f"❌ Failed to open Chrome incognito mode.\nError: {e}"
 
-    elif action == "clear history":
+    elif "clear history" in raw_action or "delete history" in raw_action:
         try:
             subprocess.Popen(["chrome", "chrome://settings/clearBrowserData"])
             time.sleep(2)
@@ -82,3 +94,17 @@ def is_chrome_focused():
         return win and "chrome" in win.title.lower()
     except:
         return False
+
+def focus_chrome_window():
+    """Bring Chrome to front if it's running."""
+    try:
+        windows = gw.getWindowsWithTitle("Chrome")
+        for win in windows:
+            if "chrome" in win.title.lower():
+                win.restore()
+                time.sleep(0.5)
+                win.activate()
+                return True
+    except:
+        pass
+    return False

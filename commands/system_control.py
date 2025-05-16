@@ -7,13 +7,15 @@ from core.registry import register_command
 from core.voice_output import speak
 
 def confirm_action(action_name):
+    message = f"Are you sure you want to {action_name} the system?"
+    speak(message)
     confirm = pyautogui.confirm(
-        speak(f"Are you sure you want to {action_name} the system?"),
-        text=f"Are you sure you want to {action_name} the system?",
+        text=message,
         title=f"Confirm {action_name.title()}",
         buttons=["Yes", "No"]
     )
     return confirm == "Yes"
+
 
 @register_command("shutdown")
 def shutdown_system(params=None):
