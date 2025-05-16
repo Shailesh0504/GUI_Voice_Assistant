@@ -1,0 +1,59 @@
+{
+    "education": {
+      "glpi": "http://itsm.jioinstitute.edu.in/glpi/front/central.php",
+      "moodle": "https://moodle.example.edu",
+      "coursera": "https://www.coursera.org",
+      "edx": "https://www.edx.org",
+      "khanacademy": "https://www.khanacademy.org"
+    },
+    "social": {
+      "facebook": "https://www.facebook.com",
+      "linkedin": "https://www.linkedin.com",
+      "instagram": "https://www.instagram.com",
+      "twitter": "https://twitter.com",
+      "whatsapp": "https://web.whatsapp.com"
+    },
+    "dev": {
+      "github": "https://github.com",
+      "stackoverflow": "https://stackoverflow.com",
+      "gitlab": "https://gitlab.com",
+      "replit": "https://replit.com",
+      "codepen": "https://codepen.io"
+    },
+    "search": {
+      "google": "https://www.google.com",
+      "bing": "https://www.bing.com",
+      "duckduckgo": "https://duckduckgo.com",
+      "yahoo": "https://www.yahoo.com",
+      "ask": "https://www.ask.com"
+    },
+    "media": {
+      "youtube": "https://www.youtube.com",
+      "spotify": "https://open.spotify.com",
+      "soundcloud": "https://soundcloud.com",
+      "twitch": "https://www.twitch.tv",
+      "vimeo": "https://vimeo.com"
+    },
+    "games": {
+      "steam": "https://store.steampowered.com",
+      "epicgames": "https://www.epicgames.com",
+      "roblox": "https://www.roblox.com",
+      "minecraft": "https://www.minecraft.net",
+      "itchio": "https://itch.io"
+    },
+    "movies": {
+      "netflix": "https://www.netflix.com",
+      "primevideo": "https://www.primevideo.com",
+      "hotstar": "https://www.hotstar.com",
+      "zee5": "https://www.zee5.com",
+      "sonyliv": "https://www.sonyliv.com"
+    },
+    "ai": {
+      "chatgpt": "https://chat.openai.com",
+      "bard": "https://gemini.google.com/",
+      "bingchat": "https://copilot.microsoft.com/",
+      "perplexity": "https://www.perplexity.ai",
+      "you": "https://you.com"
+    }
+  }
+  

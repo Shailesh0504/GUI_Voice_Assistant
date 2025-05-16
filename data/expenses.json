@@ -1,0 +1,14 @@
+[
+  {
+    "amount": 120.0,
+    "category": "lunch",
+    "note": "i spent 120 for lunch",
+    "date": "2025-05-13"
+  },
+  {
+    "amount": 90.0,
+    "category": "lunch",
+    "note": "i spent 90 for lunch",
+    "date": "2025-05-16"
+  }
+]
